@@ -1,0 +1,151 @@
+﻿@{
+    Layout = null;
+}
+@using Application2.Models;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @{
+        Employer employer = ViewBag.employer;
+        string title = employer.LastName + " " + employer.FirstName + " " + employer.FatherName;
+        <title>@title</title>
+    }
+    <style>
+        tr:nth-child(odd) {
+            background-color: #d8d9ea
+        }
+
+        tr:nth-child(even) {
+            background-color: #dbeedb
+        }
+
+        th {
+            border: 0px solid White;
+            background: DarkSlateGrey;
+            color: White;
+            padding: 0px 5px;
+        }
+
+        td {
+            padding: 0px 10px;
+            margin: 0;
+            align-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h3>Данные сотрудника</h3>
+        <div>
+            <div style="display:inline-block; width: 200px;">Id</div>
+            <div style="display:inline-block;">@employer.Id</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Фамилия</div>
+            <div style="display:inline-block;">@employer.LastName</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Имя</div>
+            <div style="display:inline-block;">@employer.FirstName</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Отчество</div>
+            <div style="display:inline-block;">@employer.FatherName</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Пол</div>
+            <div style="display:inline-block;">@employer.Gender</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Возраст</div>
+            <div style="display:inline-block;">@employer.Age</div>
+        </div>
+        <div>
+            <div style="display:inline-block; width: 200px;">Отдел</div>
+            <div style="display:inline-block;">@employer.Department</div>
+        </div>
+        <h3>Отпуска сотрудника</h3>
+        @if (((IEnumerable<dynamic>)ViewBag.Vacations).Count() == 0)
+        {
+            <div>Отпуска отсутствуют</div>
+        }
+        else
+        {
+            <table>
+                <tr>
+                    <th>Начало</th>
+                    <th>Конец</th>
+                    <th>Дней</th>
+                </tr>
+                @foreach (Vacation vacation in ViewBag.Vacations)
+                {
+                    <tr>
+                        <td>@vacation.Begin.ToString("yyyy.MM.dd")</td>
+                        <td>@vacation.End.ToString("yyyy.MM.dd")</td>
+                        <td>@((vacation.End - vacation.Begin).Days)</td>
+                        <td>
+                            <form action="/Home/Crossing">
+                                <input type="hidden" name="id" value="@vacation.Id" />
+                                <input type="hidden" name="type" value="1" />
+                                <button>Пересечение 1</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/Home/Crossing">
+                                <input type="hidden" name="id" value="@vacation.Id" />
+                                <input type="hidden" name="type" value="2" />
+                                <button>Пересечение 2</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/Home/Crossing">
+                                <input type="hidden" name="id" value="@vacation.Id" />
+                                <input type="hidden" name="type" value="3" />
+                                <button>Пересечение 3</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        <p>Пересечение 1 - пересечение этого отпуска с отпусками сотрудников отдела этого сотрудника моложе 30 лет</p>
+        <p>Пересечение 2 - пересечение этого отпуска с отпусками сотрудников женщин не из отдела этого сотрудника старше 30, но моложе 50 лет</p>
+        <p>Пересечение 3 - пересечение этого отпуска с отпусками сотрудников из любого отдела старше 50 лет</p>
+        <form action="/Home/Crossing">
+            <input type="hidden" name="id" value="1" />
+            <input type="hidden" name="type" value="4" />
+            <button>Без пересечений</button>
+        </form>
+        <p>Вывод всех отпусков без пересечений</p>
+        <h3>Добавить отпуск:</h3>
+        @using (Html.BeginForm("AddingVacation", "Home", FormMethod.Get))
+        {
+            <input type="hidden" name="PersonId" value="@employer.Id" />
+            <div>
+                <div>
+                    <div style="display: inline-block; width:100px;">Начало:</div>
+                    <div style="display: inline-block;">
+                        <input name="BeginDate" type="date" value="2024-01-01" min="2024-01-01" max="2024-12-31" required />
+                    </div>
+                </div>
+                <div>
+                    <div style="display: inline-block;width:100px;">Дней:</div>
+                    <div style="display: inline-block;">
+                        <input name="days" type="number" value="1" min="1" max="14" required />
+                    </div>
+                </div>
+                <div>
+                    <input type="submit" value="Добавить" />
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+@using Application2.Models;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Сотрудники предприятия</title>
+    <style>
+        tr:nth-child(odd) {
+            background-color: #d8d9ea
+        }
+
+        tr:nth-child(even) {
+            background-color: #dbeedb
+        }
+
+        th {
+            border: 0px solid White;
+            background: DarkSlateGrey;
+            color: White;
+            padding: 0px 5px;
+        }
+
+        td {
+            padding: 0px 10px;
+            margin: 0;
+            align-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h3>Сотрудники предприятия</h3>
+        <table>
+            <tr>
+                <th><p>Id</p></th>
+                <th><p>Фамилия</p></th>
+                <th><p>Имя</p></th>
+                <th><p>Отчество</p></th>
+                <th><p>Пол</p></th>
+                <th><p>Отдел</p></th>
+                <th><p>Возраст</p></th>
+                <th />
+            </tr>
+            @foreach (Employer emp in ViewBag.Employers)
+            {
+                <tr style="height: 20px;">
+                    <td>@emp.Id</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.FatherName</td>
+                    <td>@emp.Gender</td>
+                    <td>@emp.Department</td>
+                    <td>@emp.Age</td>
+                    <td style="padding: 0px;">
+                        <form action="/Home/AddVacation/@emp.Id">
+                            <button>Посмотреть отпуска</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

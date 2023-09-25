@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+@using Application2.Models;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @{
+        <title>@ViewBag.Type</title>
+    }
+    <style>
+        tr:nth-child(odd) {
+            background-color: #d8d9ea
+        }
+
+        tr:nth-child(even) {
+            background-color: #dbeedb
+        }
+
+        th {
+            border: 0px solid White;
+            background: DarkSlateGrey;
+            color: White;
+            padding: 0px 5px;
+        }
+
+        td {
+            padding: 0px 10px;
+            margin: 0;
+            align-content: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h3>@ViewBag.Type</h3>
+        @if (((IEnumerable<dynamic>)ViewBag.Vacations).Count() == 0)
+        {
+            <div>Пересечения отсутствуют</div>
+        }
+        else
+        {
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Фамилия</th>
+                    <th>Возраст</th>
+                    <th>Отдел</th>
+                    <th>Начало</th>
+                    <th>Конец</th>
+                    <th>Дней</th>
+                </tr>
+                @foreach (var v in ViewBag.Vacations)
+                {
+                    <tr>
+                        <td>@v.Id</td>
+                        <td>@v.LastName</td>
+                        <td>@v.Age</td>
+                        <td>@v.Department</td>
+                        <td>@v.Begin.ToString("yyyy.MM.dd")</td>
+                        <td>@v.End.ToString("yyyy.MM.dd")</td>
+                        <td>@((v.End - v.Begin).Days)</td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</body>
+</html>
